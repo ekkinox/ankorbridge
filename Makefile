@@ -14,6 +14,10 @@ fresh:
 	docker compose down --remove-orphans
 	docker compose build --no-cache
 	docker compose up -d --build -V
+	docker compose exec ankorbridge-server go run . migrate up
+
+migrate:
+	docker compose exec ankorbridge-server go run . migrate up
 
 logs:
 	docker compose logs -f

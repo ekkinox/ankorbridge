@@ -1,5 +1,5 @@
 app:
-  name: http-app
+  name: ankorbridge
   version: 0.1.0
 modules:
   core:
@@ -59,3 +59,27 @@ modules:
   trace:
     processor:
       type: noop
+  metrics:
+    collect:
+      go: true
+  sql:
+    driver: mysql
+    dsn:  ${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_DATABASE}?parseTime=true
+    migrations:
+      path: db/migrations
+      stdout: true
+    log:
+      enabled: true
+      level: debug
+      arguments: true
+      exclude:
+        - "connection:ping"
+        - "connection:reset-session"
+        - "connection:prepare-context"
+    trace:
+      enabled: true
+      arguments: true
+      exclude:
+        - "connection:ping"
+        - "connection:reset-session"
+        - "connection:prepare-context"

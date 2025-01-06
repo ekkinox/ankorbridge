@@ -8,6 +8,8 @@ import (
 	"github.com/ankorstore/yokai/fxconfig"
 	"github.com/ankorstore/yokai/fxcore"
 	"github.com/ankorstore/yokai/fxhttpserver"
+	"github.com/ankorstore/yokai/fxsql"
+	"github.com/ekkinox/ankorbridge/db/seeds"
 	"go.uber.org/fx"
 )
 
@@ -22,6 +24,7 @@ var RootDir string
 var Bootstrapper = fxcore.NewBootstrapper().WithOptions(
 	// modules registration
 	fxhttpserver.FxHttpServerModule,
+	fxsql.FxSQLModule,
 	// dependencies registration
 	Register(),
 	// routing registration
@@ -37,10 +40,18 @@ func Run(ctx context.Context) {
 func RunTest(tb testing.TB, options ...fx.Option) {
 	tb.Helper()
 
+	tb.Setenv("MODULES_SQL_MIGRATIONS_PATH", fmt.Sprintf("%s/db/migrations", RootDir))
+
 	Bootstrapper.RunTestApp(
 		tb,
 		// config lookup
 		fxconfig.AsConfigPath(fmt.Sprintf("%s/configs/", RootDir)),
+		// run test migrations
+		fxsql.RunFxSQLMigration("up"),
+		// register database seeds
+		fxsql.AsSQLSeeds(
+			seeds.NewProductsSeed,
+		),
 		// test options
 		fx.Options(options...),
 	)
