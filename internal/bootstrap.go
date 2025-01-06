@@ -46,7 +46,7 @@ func RunTest(tb testing.TB, options ...fx.Option) {
 		tb,
 		// config lookup
 		fxconfig.AsConfigPath(fmt.Sprintf("%s/configs/", RootDir)),
-		// run test migrations
+		// run database migrations
 		fxsql.RunFxSQLMigration("up"),
 		// register database seeds
 		fxsql.AsSQLSeeds(
