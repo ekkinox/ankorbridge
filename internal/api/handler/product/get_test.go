@@ -17,7 +17,7 @@ import (
 	"go.uber.org/fx"
 )
 
-func TestGetProductHandler_(t *testing.T) {
+func TestGetProductHandler(t *testing.T) {
 	var httpServer *echo.Echo
 	var logBuffer logtest.TestLogBuffer
 	var traceExporter tracetest.TestTraceExporter
