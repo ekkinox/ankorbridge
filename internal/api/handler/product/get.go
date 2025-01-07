@@ -4,18 +4,18 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/ekkinox/ankorbridge/internal/product/service"
 	"net/http"
 	"strconv"
 
-	"github.com/ekkinox/ankorbridge/internal/product"
 	"github.com/labstack/echo/v4"
 )
 
 type GetProductHandler struct {
-	service *product.ProductService
+	service *service.Fetcher
 }
 
-func NewGetProductHandler(service *product.ProductService) *GetProductHandler {
+func NewGetProductHandler(service *service.Fetcher) *GetProductHandler {
 	return &GetProductHandler{
 		service: service,
 	}
@@ -33,7 +33,7 @@ func (h *GetProductHandler) Handle() echo.HandlerFunc {
 		p, err := h.service.Find(ctx, productID)
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
-				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("product ID %d does not exist", productID))
+				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("product with ID %d does not exist", productID))
 			}
 		}
 
