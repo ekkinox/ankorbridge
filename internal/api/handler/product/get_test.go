@@ -48,9 +48,9 @@ func TestGetProductHandler(t *testing.T) {
 	// logs assertion
 	logtest.AssertHasLogRecord(t, logBuffer, map[string]interface{}{
 		"level":   "info",
-		"message": "ProductService::Find",
+		"message": "Fetching single product",
 	})
 
 	// trace assertion
-	tracetest.AssertHasTraceSpan(t, traceExporter, "ProductService::Find")
+	tracetest.AssertHasTraceSpan(t, traceExporter, "Fetching single product")
 }
